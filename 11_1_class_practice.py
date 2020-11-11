@@ -11,9 +11,10 @@ Product
 '''
 
 class Product:
-    num = 0 # static 변수
-    def __init__(self, name, price, product_amount):
-        self.serial_num = Product.num + 1
+    num = -1 # 클래스 변수. 제품의 객수 카운팅
+    def __init__(self, name, price, product_amount): #
+        Product.num += 1
+        self.serial_num = Product.num
         self.name = name
         self.price = price
         self.product_amount = product_amount
@@ -23,14 +24,20 @@ class Product:
         print("Product Name:", self.name)
         print("Price:",self.price)
         print("Product Amount:",self.product_amount)
+        print("="*10)
 
     def setPrice(self,price):
         self.price = price
 
-class Dao:
+    def getPrice(self):
+        return self.price
+
+class Dao: # 저장소 저장, 검색, 수정, 삭제
     def __init__(self):
         self.prod = []
 
+    # p는 서비스에서 제품명, 가격, 수량을 입력받아 Product 객체를 생성해서
+    # 이 메서드에 파라미터로 넣어서 호출
     def insert(self, p):
         self.prod.append(p)
 
@@ -44,13 +51,11 @@ class Dao:
 
     def delete(self, num):
         for p in self.prod:
-            if num == p.num:
+            if num == p.serial_num:
                 self.prod.remove(p)
-                return True
-        return False
 
     def update(self, serial, price): # 제품 가격만 수정
-        for idx, p in enumerate(self.prod) :
+        for p in self.prod:
             if serial == p.serial_num:
                 p.price = price
 
@@ -58,6 +63,7 @@ class Dao:
         return self.prod
 
 class Service:
+    search_num = 0
     def __init__(self):
         self.dao = Dao()
 
@@ -70,28 +76,32 @@ class Service:
         self.dao.insert(p)
 
     # 검색할 번호 입력받아 dao.select()로 검색
-    def getProduct(self, num):
-        serial = self.dao.select(num)
-        if self.dao.delete(serial):
+    def getProduct(self):
+        search_num = int(input("검색할 제품 번호 입력 : "))
+        serial = self.dao.select(search_num)
+        if serial is not None:
             self.dao.getProduct(serial).printProduct()
         else :
             print("해당 제품이 없습니다.")
 
 
     # 삭제할 제품 번호 입력받아 dao.delete()로 삭제
-    def deleteProduct(self, num):
-        serial = self.dao.select(num)
-        if self.dao.delete(serial):
+    def deleteProduct(self):
+        search_num = int(input("삭제할 제품 번호 입력 : "))
+        # 제품이 존재하는지 검사. 제품이 있으면 인덱스 반환, 없으면 None 반환
+        if self.dao.select(search_num) is not None:
+            self.dao.delete(search_num)
             print("삭제 완료")
         else :
             print("해당 제품이 없습니다.")
 
     # 수정할 제품 번호와 새 가격 입력받아 dao.update()로 수정
-    def editProduct(self, num):
-        serial = self.dao.select(num)
-        if serial is not None:
+    def editProduct(self):
+        search_num = int(input("수정할 제품 번호 입력 : "))
+        # 제품이 존재하는지 검사. 제품이 있으면 인덱스 반환, 없으면 None 반환
+        if self.dao.select(search_num) is not None:
             product_price = int(input("제품 가격:"))
-            self.dao.update(num, product_price)
+            self.dao.update(search_num, product_price)
         else:
             print("해당 제품이 없습니다.")
 
@@ -111,14 +121,11 @@ class Menu:
             if x==1:
                 self.service.addProduct()
             elif x==2:
-                num = int(input("검색할 제품 번호 입력 : "))
-                self.service.getProduct(num)
+                self.service.getProduct()
             elif x==3:
-                num = int(input("수정할 제품 번호 입력 : "))
-                self.service.editProduct(num)
+                self.service.editProduct()
             elif x==4:
-                num = int(input("삭제할 제품 번호 입력 : "))
-                self.service.deleteProduct(num)
+                self.service.deleteProduct()
             elif x==5:
                 self.service.printAll()
             elif x==6:
