@@ -1,6 +1,6 @@
 __all__ = [
-    'PageOne',
-    'PageTwo',
-    'PageThree',
-    'StartPage'
+    'MovieOne.py',
+    'MovieTwo.py',
+    'MovieThree.py',
+    'MovieListPage.py'
 ]

@@ -1,6 +1,6 @@
 import tkinter as tk
 import python_mini_project.main.UI.MainPage as mp
-
+import os
 
 class SwitchFrame(tk.Tk): # 상속
     def __init__(self):
@@ -8,6 +8,8 @@ class SwitchFrame(tk.Tk): # 상속
         tk.Tk.__init__(self)
         self._frame = None
         self.switch_frame(mp.MainPage)
+        # self.switch_frame(lp.LoginPage)
+        # self.switch_frame(bp.bookingPage)
 
     def switch_frame(self, frame_class):
         new_frame = frame_class(self)

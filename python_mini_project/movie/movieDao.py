@@ -6,11 +6,12 @@ class MovieDao:
     #
     # # def select(self, num):
     def getMovie(self, title):
-        # os.chdir("movie_info")
-        f = open(title+".txt", "r", encoding="utf-8")
+        print(os.getcwd())
+        # os.chdir("../data/movie")
+        f = open("../data/movie/" + title+".txt", "r", encoding="utf-8")
+        print(os.getcwd())
         movie_info = f.read()
         f.close()
-        os.chdir("../")
         return movie_info
 
 
