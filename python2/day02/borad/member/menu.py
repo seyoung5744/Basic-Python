@@ -21,5 +21,11 @@ class MemMenu:
             elif m == 6:
                 break
 
+    def loginCheck(self):
+        if self.service.loginId==None:
+            return (False,)
+        else:
+            return True, self.service.loginId
+
 
 

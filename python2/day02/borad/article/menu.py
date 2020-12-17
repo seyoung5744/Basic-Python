@@ -4,7 +4,8 @@ class ArtMenu:
     def __init__(self):
         self.service = serv.Service()
 
-    def run(self):
+    def run(self, loginId):
+        self.service.loginId = loginId
         while True:
             m = int(input('1. 글쓰기 2.글목록 3.글번호검색 4. 글 제목으로 검색 5.작성자로 글검색 6.글수정 7.글삭제 8.종료'))
             if m == 1:
